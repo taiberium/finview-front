@@ -1,16 +1,15 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import logger from 'redux-logger';
 import promiseMiddleware from 'redux-promise-middleware'
-
-import {searchAction} from "./action/search";
-import {asyncReducer} from "redux-promise-middleware-actions";
-import {getQuoteAction} from "./action/quote";
+import {asyncReducer} from 'redux-promise-middleware-actions';
+import searchAction from "./action/search";
 
 
-export const rootReducer = combineReducers({
+const reducer = asyncReducer(searchAction);
+/*const rootReducer = combineReducers({
     search: asyncReducer(searchAction),
-    quotes: asyncReducer(getQuoteAction)
-});
+    //  quotes: asyncReducer(getQuoteAction)
+});*/
 
 let middleware = [
     logger,
@@ -18,7 +17,7 @@ let middleware = [
 ];
 
 const store = createStore(
-    rootReducer,
+    reducer,
     applyMiddleware(...middleware)
 );
 
