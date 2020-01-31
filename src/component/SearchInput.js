@@ -23,7 +23,6 @@ class SearchInput extends React.Component {
         const {pending, data, error} = searchData;
         const {pending: quotesPending} = quotesData;
         const searchActionDebounced = debounce(searchAction, 400);
-        console.log("VALUE: " + JSON.stringify(value));
         const getQuotes = () => getQuoteAction(value.map(val => val.key));
         if (error) return error;
         return (

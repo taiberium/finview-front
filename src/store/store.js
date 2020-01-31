@@ -13,9 +13,12 @@ const rootReducer = combineReducers({
 });
 
 let middleware = [
-    logger,
     promiseMiddleware,
 ];
+
+if (process.env.NODE_ENV !== 'production') {
+    middleware = [...middleware, logger];
+}
 
 const store = createStore(
     rootReducer,
