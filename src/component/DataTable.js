@@ -1,5 +1,9 @@
 import React from "react";
 import {Table} from "antd";
+import {connect} from "react-redux";
+import {precisionPercentRenderer, ratioFormatter} from "../util/formatter";
+import './DataTable.css';
+
 
 const columns = [
     {
@@ -14,22 +18,28 @@ const columns = [
     },
     {
         title: 'Price',
+        className: 'price',
         dataIndex: 'price',
         sorter: (a, b) => a.price - b.price,
+        render: (price, record) => record.currencySymbol + price
     },
     {
         title: 'Price To Book value',
+        className: 'price',
         dataIndex: 'pb',
         sorter: (a, b) => a.pb - b.pb,
+        render: pbRatio => ratioFormatter(pbRatio)
     },
     {
         title: 'DividendPercent',
+        className: 'price',
         dataIndex: 'dividendPercent',
         sorter: (a, b) => a.dividendPercent - b.dividendPercent,
+        render: percent => precisionPercentRenderer(percent)
     },
 ];
 
-const data = [
+/*const data = [
     {
         "pe": 17.203049,
         "peg": 2.64,
@@ -47,26 +57,19 @@ const data = [
         "dividend": 2.08,
         "dividendPercent": 0.0542
     },
-    {
-        "pe": 5.667742,
-        "peg": -0.35,
-        "pb": 0.89624566,
-        "bookValue": 19.604,
-        "companyName": "Macy's, Inc.",
-        "ticker": "M",
-        "type": "EQUITY",
-        "currency": "USD",
-        "price": 17.57,
-        "low52Week": 14.11,
-        "high52Week": 26.48,
-        "highDay": 17.68,
-        "lowDay": 17.4445,
-        "dividend": 1.51,
-        "dividendPercent": 0.0859
-    }
-];
+];*/
 
-export default function DataTable(props) {
-    //const { data } = props;
-    return <Table columns={columns} dataSource={data} />;
+function DataTable(props) {
+    const {quotesData} = props;
+    const {data} = quotesData;
+    const dataArray = data ? data : [];
+    return <Table rowKey={record => record.ticker} columns={columns} dataSource={dataArray}/>;
 }
+
+const mapDispatchToProps = (dispatch) => ({});
+
+const mapStateToProps = (state) => ({
+    quotesData: state.quotes
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataTable);

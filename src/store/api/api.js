@@ -1,8 +1,8 @@
 
 
 const API = {
-    SEARCH: (ticker) => `/api/search/${ticker}`,
-    GET_QUOTE: "/api/quotes",
+    SEARCH: (ticker) => `/search/${ticker}`,
+    GET_QUOTE: "/quotes",
 };
 
 export default API;

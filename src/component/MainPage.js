@@ -4,7 +4,7 @@ import SearchInput from "./SearchInput";
 
 export default function MainPage(props) {
     return <div>
-       {/* <SearchInput/>*/}
+        <SearchInput/>
         <DataTable/>
     </div>;
 }

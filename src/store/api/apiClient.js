@@ -1,12 +1,5 @@
 import request from 'superagent';
 import prefixPlugin from 'superagent-prefix';
-import isNull from 'lodash/isNull';
-import store from '../store';
-/* eslint-disable */
-export const getAuthorizedHeader = () => {
-  const token = store.getState().auth.token;
-  return isNull(token) ? {} : { Authorization: `Bearer ${token}` };
-};
 
 const prefix = prefixPlugin('/api');
 
@@ -16,7 +9,9 @@ export const get = (url, params) =>
     .use(prefix)
     //.set(getAuthorizedHeader())
     .query(params)
-    .retry(2);
+    .retry(2)
+      .then(response => response.body)
+      .catch(error => error);
 
 export const post = (url, data) =>
   request

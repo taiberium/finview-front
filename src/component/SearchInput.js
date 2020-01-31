@@ -1,18 +1,16 @@
 import React from "react";
-import {Select, Spin} from 'antd';
+import {Button, Col, Row, Select, Spin} from 'antd';
 import debounce from 'lodash/debounce';
 import {connect} from "react-redux";
-import searchAction from "../store/action/search";
-const { Option } = Select;
+import {searchAction} from "../store/action/search";
+import {getQuoteAction} from "../store/action/quote";
+
+const {Option} = Select;
 
 class SearchInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.fetchUser = debounce(this.fetchUser, 800);
-    }
 
     state = {
-        data: [],
+        value: [],
     };
 
     handleChange = value => {
@@ -20,35 +18,59 @@ class SearchInput extends React.Component {
     };
 
     render() {
-        const { value } = this.state;
-        const { searchData, searchAction } = this.props;
+        const {value} = this.state;
+        const {searchData, searchAction, getQuoteAction, quotesData} = this.props;
         const {pending, data, error} = searchData;
+        const {pending: quotesPending} = quotesData;
+        const searchActionDebounced = debounce(searchAction, 400);
+        console.log("VALUE: " + JSON.stringify(value));
+        const getQuotes = () => getQuoteAction(value.map(val => val.key));
+        if (error) return error;
         return (
-            <Select
-                mode="multiple"
-                labelInValue
-                value={value}
-                placeholder="Select users"
-                notFoundContent={pending ? <Spin size="small" /> : null}
-                filterOption={false}
-                onSearch={searchAction}
-                onChange={this.handleChange}
-                style={{ width: '100%' }}
-            >
-                {data.map(d => (
-                    <Option key={d.ticker}>{d.ticker}</Option>
-                ))}
-            </Select>
+            <div>
+                <Select
+                    size="large"
+                    mode="multiple"
+                    labelInValue
+                    value={value}
+                    placeholder="Select users"
+                    notFoundContent={pending ? <Spin size="small"/> : null}
+                    filterOption={false}
+                    onSearch={searchActionDebounced}
+                    onChange={this.handleChange}
+                    optionLabelProp="label"
+                    style={{
+                        width: "600px",
+                        margin: "0 8px 8px 0"
+                    }}
+                >
+                    {data ? data.map(d => (
+                        <Option key={d.ticker} label={d.ticker}>
+                            <Row>
+                                <Col span={4}>{d.ticker}</Col>
+                                <Col span={16}>{d.companyName}</Col>
+                                <Col style={{textAlign: "right"}} span={4}>{d.quoteType} - {d.exchange}</Col>
+                            </Row>
+                        </Option>
+                    )) : []}
+                </Select>
+                <Button type="primary" shape="circle" icon="plus"
+                        loading={quotesPending}
+                        onClick={getQuotes}
+                />
+            </div>
         );
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     searchAction: (ticker) => dispatch(searchAction(ticker)),
+    getQuoteAction: (tickerArray) => dispatch(getQuoteAction(tickerArray)),
 });
 
 const mapStateToProps = (state) => ({
-    searchData: state.search
+    searchData: state.search,
+    quotesData: state.quotes
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchInput);
