@@ -8,13 +8,15 @@ import './DataTable.css';
 const columns = [
     {
         title: 'Ticker',
-        dataIndex: 'ticker',
-        sorter: (a, b) => a.ticker.length - b.ticker.length,
+        dataIndex: 'ticker'
     },
     {
-        title: 'Company Name',
+        title: 'Type',
+        dataIndex: 'type'
+    },
+    {
+        title: 'Name',
         dataIndex: 'companyName',
-        sorter: (a, b) => a.companyName.length - b.companyName.length,
     },
     {
         title: 'Price',
@@ -24,18 +26,50 @@ const columns = [
         render: (price, record) => record.currencySymbol + price
     },
     {
-        title: 'Price To Book value',
-        className: 'price',
+        title: 'P/B',
         dataIndex: 'pb',
         sorter: (a, b) => a.pb - b.pb,
         render: pbRatio => ratioFormatter(pbRatio)
     },
     {
-        title: 'DividendPercent',
+        title: 'Book price',
         className: 'price',
+        dataIndex: 'bookValue',
+        sorter: (a, b) => a.bookValue - b.bookValue,
+        render: (bookValue, record) => record.currencySymbol + bookValue
+    },
+    {
+        title: 'P/E',
+        dataIndex: 'pe',
+        sorter: (a, b) => a.pe - b.pe,
+        render: peRatio => ratioFormatter(peRatio)
+    },
+    {
+        title: 'PEG',
+        dataIndex: 'peg',
+        sorter: (a, b) => a.peg - b.peg,
+        render: pegRatio => ratioFormatter(pegRatio)
+    },
+    {
+        title: 'Dividend',
         dataIndex: 'dividendPercent',
         sorter: (a, b) => a.dividendPercent - b.dividendPercent,
-        render: percent => precisionPercentRenderer(percent)
+        render: (divPercent, record) => {
+            console.log("Percent: ", record.dividendPercent);
+            console.log("Percent: ", precisionPercentRenderer(record.dividendPercent));
+
+            return precisionPercentRenderer(record.dividendPercent) + "-" + record.currencySymbol + record.dividend
+        }
+    },
+    {
+        title: '52WeekPrice',
+        dataIndex: 'high52Week',
+        render: (row, record) => record.currencySymbol + record.low52Week + "-" + record.high52Week
+    },
+    {
+        title: 'DayPrice',
+        dataIndex: 'highDay',
+        render: (row, record) => record.currencySymbol + record.lowDay + "-" + record.highDay
     },
 ];
 

@@ -10,7 +10,7 @@ const formatNumber = (number, precision) =>
         : null;
 
 const percentFormatRenderer = value =>
-    value !== null ? <span>{`${value}%`}</span> : '';
+    value !== null ? `%${value}` : '';
 
 export const precisionPercentRenderer = (value, precision = 2) =>
     isNumber(value) ? percentFormatRenderer(formatNumber(value * 100, precision)) : '';
