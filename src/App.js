@@ -1,14 +1,14 @@
 import React from 'react';
 //import './App.css';
 import 'antd/dist/antd.css';
-import MainPage from "./component/MainPage";
+import LayoutPage from "./component/LayoutPage";
 import {Provider} from 'react-redux';
 import store from './store/store';
 
 function App() {
     return (
         <Provider store={store}>
-            <MainPage/>
+            <LayoutPage/>
         </Provider>
     );
 }
