@@ -1,0 +1,15 @@
+.Info {
+  padding-bottom: 2vh;
+
+}
+
+.FlexCardsWrapper {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.FlexCard {
+  width: 350px;
+}

@@ -1,13 +1,13 @@
 import React from "react";
-import {Table} from "antd";
+import {Table, Tooltip} from "antd";
 import {connect} from "react-redux";
-import {precisionPercentRenderer, ratioFormatter} from "../util/formatter";
-import './DataTable.css';
+import {precisionPercentRenderer, ratioFormatter} from "../../util/formatter";
+import './DataTable.scss';
 
 
 const columns = [
     {
-        title: 'Ticker',
+        title: <Tooltip title="Short code of the security">Ticker</Tooltip>,
         dataIndex: 'ticker'
     },
     {
@@ -23,37 +23,43 @@ const columns = [
         className: 'price',
         dataIndex: 'price',
         sorter: (a, b) => a.price - b.price,
-        render: (price, record) => record.currencySymbol + price
+        showSorterTooltip: false,
+        render: (price, record) => record.currencySymbol + price,
     },
     {
-        title: 'P/B',
+        title: <Tooltip title={<div><div>Price to Book value</div><div>The ratio of the security price to its real value</div></div>}>P/B</Tooltip>,
         dataIndex: 'pb',
         sorter: (a, b) => a.pb - b.pb,
-        render: pbRatio => ratioFormatter(pbRatio)
+        showSorterTooltip: false,
+        render: pbRatio => ratioFormatter(pbRatio),
     },
     {
-        title: 'Book price',
+        title: <Tooltip title={<div><div>The book value of a company security</div><div>It's the total value of the company's assets, minus the company's outstanding liabilities</div></div>}>Book price</Tooltip>,
         className: 'price',
         dataIndex: 'bookValue',
         sorter: (a, b) => a.bookValue - b.bookValue,
-        render: (bookValue, record) => record.currencySymbol + bookValue
+        showSorterTooltip: false,
+        render: (bookValue, record) => record.currencySymbol + bookValue,
     },
     {
         title: 'P/E',
         dataIndex: 'pe',
         sorter: (a, b) => a.pe - b.pe,
-        render: peRatio => ratioFormatter(peRatio)
+        showSorterTooltip: false,
+        render: peRatio => ratioFormatter(peRatio),
     },
     {
         title: 'PEG',
         dataIndex: 'peg',
         sorter: (a, b) => a.peg - b.peg,
-        render: pegRatio => ratioFormatter(pegRatio)
+        showSorterTooltip: false,
+        render: pegRatio => ratioFormatter(pegRatio),
     },
     {
         title: 'Dividend',
         dataIndex: 'dividendPercent',
         sorter: (a, b) => a.dividendPercent - b.dividendPercent,
+        showSorterTooltip: false,
         render: (divPercent, record) => {
             console.log("Percent: ", record.dividendPercent);
             console.log("Percent: ", precisionPercentRenderer(record.dividendPercent));

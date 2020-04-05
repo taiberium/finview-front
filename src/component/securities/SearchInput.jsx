@@ -2,10 +2,12 @@ import React from "react";
 import {Button, Col, Row, Select, Spin} from 'antd';
 import debounce from 'lodash/debounce';
 import {connect} from "react-redux";
-import {searchAction} from "../store/action/search";
-import {getQuoteAction} from "../store/action/quote";
+import {searchAction} from "../../store/action/search";
+import {getQuoteAction} from "../../store/action/quote";
+import {PlusOutlined} from '@ant-design/icons';
 
 const {Option} = Select;
+
 
 class SearchInput extends React.Component {
 
@@ -53,7 +55,7 @@ class SearchInput extends React.Component {
                         </Option>
                     )) : []}
                 </Select>
-                <Button type="primary" shape="circle" icon="plus"
+                <Button type="primary" shape="circle" icon={<PlusOutlined/>}
                         loading={quotesPending}
                         onClick={getQuotes}
                 />

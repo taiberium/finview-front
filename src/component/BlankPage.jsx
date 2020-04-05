@@ -1,10 +1,9 @@
 import React from 'react';
-import './MainPage.css';
 
 
 const BlankPage = (props) =>
     <div>
-        Blank Page with name
+        Under construction
     </div>;
 
 export default BlankPage;
